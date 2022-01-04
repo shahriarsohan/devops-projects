@@ -100,18 +100,6 @@
           Name: vprofile-igw
       register: igw_out
 
-    - name: Set up public subnet route table
-      ec2_vpc_route_table:
-        vpc_id: "{{vpcout.vpc.id}}"
-        region: "{{region}}"
-        subnets:
-          - "{{pubsubout1_out.subnet.id}}"
-          - "{{pubsubout2_out.subnet.id}}"
-          - "{{pubsubout3_out.subnet.id}}"
-        resource_tags:
-          Name: vprofile-public-subnet-route-table
-      register: pubroutetable1
-
     - name: Set up Public subnet route table
       ec2_vpc_route_table:
         vpc_id: "{{vpcout.vpc.id}}"
@@ -120,18 +108,23 @@
           - "{{pubsubout1_out.subnet.id}}"
           - "{{pubsubout2_out.subnet.id}}"
           - "{{pubsubout3_out.subnet.id}}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{igw_out.gateway_id}}"
         resource_tags:
           Name: vprofile-public-subnet-route-table
       register: pubroutetable1
 
-    - name: Set up Private subnet route table
-      ec2_vpc_route_table:
-        vpc_id: "{{vpcout.vpc.id}}"
-        region: "{{region}}"
-        subnets:
-          - "{{prisubout1_out.subnet.id}}"
-          - "{{prisubout2_out.subnet.id}}"
-          - "{{prisubout3_out.subnet.id}}"
-        resource_tags:
-          Name: vprofile-private-subnet-route-table
-      register: priroutetable1
+    # - name: Set up Private subnet route table
+    #   ec2_vpc_route_table:
+    #     vpc_id: "{{vpcout.vpc.id}}"
+    #     region: "{{region}}"
+    #     subnets:
+    #       - "{{prisubout1_out.subnet.id}}"
+    #       - "{{prisubout2_out.subnet.id}}"
+    #       - "{{prisubout3_out.subnet.id}}"
+    #     routes:
+    #       - dest: 0.0.0.0/0
+    #     resource_tags:
+    #       Name: vprofile-private-subnet-route-table
+    #   register: priroutetable1
