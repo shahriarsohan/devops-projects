@@ -115,16 +115,11 @@
           Name: vprofile-public-subnet-route-table
       register: pubroutetable1
 
-    # - name: Set up Private subnet route table
-    #   ec2_vpc_route_table:
-    #     vpc_id: "{{vpcout.vpc.id}}"
-    #     region: "{{region}}"
-    #     subnets:
-    #       - "{{prisubout1_out.subnet.id}}"
-    #       - "{{prisubout2_out.subnet.id}}"
-    #       - "{{prisubout3_out.subnet.id}}"
-    #     routes:
-    #       - dest: 0.0.0.0/0
-    #     resource_tags:
-    #       Name: vprofile-private-subnet-route-table
-    #   register: priroutetable1
+    - name: Create new nat gateway and allocate new EIP if nat does not
+      ec2_vpc_nat_gateway:
+        state: "{{state}}"
+        subnet_id: "{{pubsubout1_out.subnet.id}}"
+        wait: yes
+        region: "{{region}}"
+        if_exist_do_not_create: true
+      register: Nat_out
