@@ -12,4 +12,4 @@
     - name: store login key
       copy:
         content: "{{keyout.key.private_key}}"
-        dest: /sample-key.pem
+        dest: ./sample-key.pem
