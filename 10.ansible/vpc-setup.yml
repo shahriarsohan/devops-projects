@@ -5,12 +5,12 @@
     - name: Import VPC Variables
       include_vars: vars/vpc_setup
 
-    - name: Create vprofile Vpc
+    - name: Create vprofile VPC
       ec2_vpc_net:
         name: "{{vpc_name}}"
-        cide_block: "{{vpcCidr}}"
+        cidr_block: "{{vpcCidr}}"
         region: "{{region}}"
-        dns_aupport: yes
+        dns_support: yes
         dns_hostnames: yes
         tenancy: default
         state: "{{state}}"
